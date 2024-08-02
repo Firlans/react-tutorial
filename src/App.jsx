@@ -7,6 +7,7 @@ function Square({ value, handler }) {
   return <button className='square' onClick={handler}>{value}</button>
 }
 
+
 function Board({isXisNext, values, onPlay}) {
 
 
