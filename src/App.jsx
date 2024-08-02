@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState } from 'react'
 
-import './assets/style.css';
+import './assets/style.css'
 
 function Square({ value, handler }) {
-  return <button className='square' onClick={handler}>{value}</button>;
+  return <button className='square' onClick={handler}>{value}</button>
 }
 
-function Board({ isXisNext = true, values = Array(9).fill(null), onPlay }) {
-  function handleClick(index) {
+function Board({isXisNext, values, onPlay}) {
+
+
+  function handlerClick(index) {
     if (values[index] || calculateWinner(values)) return;
 
     const newValues = values.slice();
@@ -17,18 +19,18 @@ function Board({ isXisNext = true, values = Array(9).fill(null), onPlay }) {
   }
 
   const winner = calculateWinner(values);
-  let status = winner ? 'Winner: ' + winner : 'Next Player: ' + (isXisNext ? 'X' : 'O');
+  let status = winner ? 'Winner : ' + winner : 'Next Player : ' + (isXisNext ? 'X' : 'O');
 
   return (
     <>
       <div className="status">{status}</div>
       <div className='board'>
         {values.map((value, index) => (
-          <Square key={index} value={value} handler={() => handleClick(index)} />
+            <Square key={index} value={value} handler={() => handlerClick(index)} />
         ))}
       </div>
     </>
-  );
+  )
 }
 
 export default function Game() {
@@ -37,7 +39,7 @@ export default function Game() {
   const xIsNext = currentMove % 2 === 0;
   const currentValues = history[currentMove];
 
-  function handlePlay(nextValues) {
+  function handlerPlay(nextValues) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextValues];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
@@ -48,7 +50,8 @@ export default function Game() {
   }
 
   const moves = history.map((squares, move) => {
-    let description = move > 0 ? 'Go to move #' + move : 'Go to game start';
+    let description;
+    description = move > 0 ? 'Go to move #' + move : 'Go to game start';
     return (
       <li key={move}>
         <button onClick={() => jumpTo(move)}>{description}</button>
@@ -59,13 +62,13 @@ export default function Game() {
   return (
     <div className='game'>
       <div className="game-board">
-        <Board isXisNext={xIsNext} values={currentValues} onPlay={handlePlay} />
+        <Board isXisNext={xIsNext} values={currentValues} onPlay={handlerPlay} />
       </div>
       <div className="game-info">
         <ol>{moves}</ol>
       </div>
     </div>
-  );
+  )
 }
 
 function calculateWinner(values) {
@@ -83,7 +86,7 @@ function calculateWinner(values) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (values[a] && values[a] === values[b] && values[b] === values[c]) {
-      return values[a];
+      return values[a]
     }
   }
   return null;
